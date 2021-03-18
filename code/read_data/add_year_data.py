@@ -29,12 +29,16 @@ if __name__ == "__main__":
     df_metadata = df_metadata.loc[start_idx:finish_idx]
 
     all_dates = []
-    for index, row in tqdm(list(df_metadata.iterrows())[:10]):
+    for index, row in tqdm(list(df_metadata.iterrows())):
         # read the artist and timestamp
         artist, title = row["artist"], row["title"]
+        
+        try:
+            mb_metadata = requests.get(f'http://musicbrainz.org/ws/2/recording?query=artist:{artist},recording:{title}&fmt=json&limit=1').json()
+        except ValueError:
+            continue
 
-        mb_metadata = requests.get(f'http://musicbrainz.org/ws/2/recording?query=artist:{artist},recording:{title}&fmt=json&limit=1').json()
-        if len(mb_metadata["recordings"]) > 0 and "first-release-date" in mb_metadata["recordings"][0]:
+        if "recordings" in mb_metadata and len(mb_metadata["recordings"]) > 0 and "first-release-date" in mb_metadata["recordings"][0]:
             release_date = mb_metadata["recordings"][0]["first-release-date"]
             all_dates.append({"id": row["id"], "date": release_date})
 
