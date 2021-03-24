@@ -1,7 +1,7 @@
 """
 This file reads data from the musicxmatch dataset in the file "mxm_779k_matches.txt",
 determines which are solo artists using US baby names from "NationalNames.csv",
-and saves the names of solo artists in the file
+and saves the names of solo artists in the file "artists.csv"
 """
 
 import pandas as pd
@@ -43,7 +43,6 @@ if __name__ == "__main__":
     solo_artists = [artist for artist in all_artists if artist.split(" ")[0] in solo_artists_first_names]
 
     # Write to file
-    # pd.DataFrame({"artists": solo_artists}).to_csv(OUTPUT_PATH, sep=",", encoding="utf-8")
     with open(OUTPUT_PATH,"w") as f:
         wr = csv.writer(f, delimiter="\n")
         wr.writerow(solo_artists)
