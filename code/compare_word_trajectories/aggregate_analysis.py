@@ -1,38 +1,12 @@
 """
 This file computes the cross correlations and ahead-ness of words in music
 """
-from cross_correlations import time_lag_cross_corrs
+from cross_correlations import get_best_offset, bootstrap_test
 import pandas as pd
 import numpy as np
 import pickle
 
 DATA_PATH = "../../data/processed"
-
-
-def get_best_offset(df_book, df_song, word):
-    """
-    This function finds the offset that maximizes the
-    """
-    book_word = df_book[df_book["word"] == word]["freq"].reset_index()["freq"]
-    song_word = df_song[df_song["word"] == word]["freq"].reset_index()["freq"]
-
-    rs = time_lag_cross_corrs(book_word, song_word)
-    if np.isnan(np.sum(rs)):
-        return 0
-
-    return np.nanargmax(rs) - len(book_word) // 2
-
-
-def bootstrap_test(val, lst, n=100000):
-    n_opposite = 0
-    all_subsets = np.random.choice(lst, size=(n, len(lst)), replace=True)
-    for i in range(n):
-        subset = all_subsets[i, :]
-        if np.sign(np.mean(subset)) != np.sign(val):
-            n_opposite += 1
-
-    return n_opposite / n
-
 
 if __name__ == "__main__":
 
@@ -49,7 +23,8 @@ if __name__ == "__main__":
         best_offset = get_best_offset(df_book, df_song, word)
         best_offsets.append(best_offset)
 
-    mean_offset = np.mean(best_offsets)
+    mean_offset = np.nanmean(best_offsets)
     p_value = bootstrap_test(mean_offset, best_offsets)
 
     print(f"mean offset: {mean_offset}, p={p_value}")
+    print(f"median offset: {np.nanmedian(best_offsets)}")
