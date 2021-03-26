@@ -28,7 +28,7 @@ if __name__ == "__main__":
             best_offsets.append(best_offset)
 
         mean_offset = np.nanmean(best_offsets)
-        p_value = bootstrap_test(mean_offset, best_offsets)`
+        p_value = bootstrap_test(mean_offset, best_offsets)
 
         print(f"{genre} mean offset: {mean_offset}, p={p_value}")
         print(f"median offset: {np.nanmedian(best_offsets)}")
