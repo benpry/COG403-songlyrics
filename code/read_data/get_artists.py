@@ -40,7 +40,13 @@ if __name__ == "__main__":
     # Select names of solo artists 
     all_artists_first_names = [name.split(" ")[0] for name in all_artists]
     solo_artists_first_names = list(set(all_artists_first_names).intersection(names))
-    solo_artists = [artist for artist in all_artists if artist.split(" ")[0] in solo_artists_first_names]
+
+    solo_artists = []
+    for artist in all_artists:
+        split = artist.split(" ")
+        # If artist name has 2 or fewer words and the first name is a solo name, add to solo artists
+        if len(split) <= 2 and split[0] in solo_artists_first_names:
+            solo_artists.append(artist)
 
     # Write to file
     with open(OUTPUT_PATH,"w") as f:

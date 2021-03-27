@@ -24,6 +24,13 @@ Analyse artists by gender
 Goals:
 Review results and decide which to report
 
+**Gender Analysis Result:**
+![](results/gender_analysis_result.png)
+- Since the offsets are positive in both cases, books were ahead of songs in both cases
+- Since the offset for females is smaller than for males, female artists introduce new words into their lyrics more frequently than male artists
+- Since the p values are 0, these are statistically significant values
+
+
 ## Week 5: Monday, March 29 - Sunday, April 4
 
 Goals:
