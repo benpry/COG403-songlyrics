@@ -51,7 +51,7 @@ if __name__ == "__main__":
                             return potential_year
                         
 
-        # Returns 0000 if birthyear wasn't found
+        # Returns 0 if birthyear wasn't found
         return 0
 
 
@@ -63,12 +63,16 @@ if __name__ == "__main__":
     
     # Get birthyears
     artist_birthyears = []
-    for artist in artists[0:1000]:
+    # For running in batches:
+    # for artist in artists[14000:]:
+    for artist in artists:
         birthyear = lookup(artist)
         if birthyear != 0:
             artist_birthyears.append([artist, birthyear])
     
     # Write to file
+    # For running in batches:
+    # with open(OUTPUT_PATH, 'a') as outfile:
     with open(OUTPUT_PATH, 'w') as outfile:
         mywriter = csv.writer(outfile)
         for i in artist_birthyears:

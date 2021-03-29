@@ -13,6 +13,7 @@ if __name__ == "__main__":
     with open(SONGS_FILEPATH, "rb") as fp:
         all_songs = pickle.load(fp)
 
+    # TODO: Refactor
     age_under20_songs = [song for song in all_songs if int(song["age"]) < 20 ]
     df_under20 = compute_frequency_dataframe(age_under20_songs)
     df_under20.to_csv(f"{OUTPUT_DIRECTORY}/under20.csv")
@@ -33,12 +34,5 @@ if __name__ == "__main__":
     df_over50 = compute_frequency_dataframe(age_over50_songs)
     df_over50.to_csv(f"{OUTPUT_DIRECTORY}/over50.csv")
 
-
-    # TODO: Refactor
-    # age_groups = ["under20", "20to30", "30to40", "40to50", "over50"]
-    # for age_group in age_groups:
-    #     age_group_songs = [song for song in all_songs if lookup(song["age"]) == age_group]
-    #     df_group = compute_frequency_dataframe(age_group_songs)
-    #     df_group.to_csv(f"{OUTPUT_DIRECTORY}/{age_group}.csv")
 
     
