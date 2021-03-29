@@ -30,6 +30,11 @@ Review results and decide which to report
 - Since the offset for females is smaller than for males, female artists introduce new words into their lyrics more frequently than male artists
 - Since the p values are 0, these are statistically significant values
 
+**Age Analysis Result:**
+![](results/age_analysis_result.png)
+- Mean offset is negative for every group other than 20to30, which means songs were ahead of books in these cases
+- and in age 20to30 songs were behind books
+- The value is not significant for group 30to40, but is significant for all others
 
 ## Week 5: Monday, March 29 - Sunday, April 4
 

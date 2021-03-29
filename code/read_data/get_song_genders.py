@@ -1,5 +1,5 @@
 """
-This file gets the gender of the artist of each song and stores the song id with the gender is "songs_with_gender.csv"
+This file gets the gender of the artist of each song and stores the song id with the gender in "songs_with_genders.csv"
 """
 import csv
 
