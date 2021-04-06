@@ -40,7 +40,7 @@ if __name__ == "__main__":
                 print(f"{dictionary.get(term[0])}: p={term[1]}")
 
     # save the LDA model
-    lda.save(OUTPUT_FILE)
+    # lda.save(OUTPUT_FILE)
 
     # add topic mixtures to each song
     new_songs = []
