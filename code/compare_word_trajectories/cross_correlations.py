@@ -10,7 +10,7 @@ def time_lag_cross_corrs(s1, s2):
     s1 and s2 are pd.Series objects that we are computing the cross correlations of
     """
     rs = []
-    for lag in range(-len(s1) // 2, len(s1) // 2):
+    for lag in range(-10, 10):
         r = s1.corr(s2.shift(lag))
         rs.append(r)
 
@@ -32,7 +32,7 @@ def get_best_offset(df_book, df_song, word):
     if np.isnan(np.sum(rs)) or np.nanargmax(rs) <= 0:
         return np.NaN
 
-    return np.nanargmax(rs) - (len(song_word) // 2)
+    return np.nanargmax(rs) - 10
 
 
 def bootstrap_test(val, lst, n=100000):

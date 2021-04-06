@@ -7,16 +7,17 @@ import numpy as np
 import pickle
 
 DATA_PATH = "../../data/processed"
+RESULTS_PATH = "../../data/aggregate_best_offsets.csv"
 
 if __name__ == "__main__":
 
     df_song = pd.read_csv(f"{DATA_PATH}/song_frequencies.csv")
-    df_song = df_song[df_song["year"] >= 1960]
+    df_song = df_song[df_song["year"] >= 1990]
 
     df_book = pd.read_csv(f"{DATA_PATH}/book_frequencies.csv")
     df_book = df_book.drop(["Corpus"], axis=1)
     df_book.columns = ["", "year", "word", "freq"]
-    df_book = df_book[(df_book["year"] >= 1960) & (df_book["year"] <= 2011)]
+    df_book = df_book[(df_book["year"] >= 1990) & (df_book["year"] <= 2011)]
 
     best_offsets = []
     for word in df_book["word"].drop_duplicates():
@@ -25,6 +26,9 @@ if __name__ == "__main__":
 
     mean_offset = np.nanmean(best_offsets)
     p_value = bootstrap_test(mean_offset, best_offsets)
+
+    all_best_offsets = pd.Series(best_offsets)
+    all_best_offsets.to_csv(RESULTS_PATH)
 
     print(f"mean offset: {mean_offset}, p={p_value}")
     print(f"median offset: {np.nanmedian(best_offsets)}")

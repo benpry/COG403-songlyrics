@@ -8,6 +8,7 @@ import numpy as np
 GENRES_FILEPATH = "../../data/processed/genres.csv"
 GENRE_DIRECTORY = "../../data/processed/freqs_by_genre"
 DATA_PATH = "../../data/processed"
+RESULTS_FILE = "../../data/results_by_genre.csv"
 
 if __name__ == "__main__":
 
@@ -18,6 +19,7 @@ if __name__ == "__main__":
     df_book.columns = ["", "year", "word", "freq"]
     df_book = df_book[(df_book["year"] >= 1960) & (df_book["year"] <= 2011)]
 
+    rows = []
     for genre in genres:
         df_song = pd.read_csv(f"{GENRE_DIRECTORY}/{genre}.csv")
         df_song = df_song[df_song["year"] >= 1960]
@@ -32,3 +34,7 @@ if __name__ == "__main__":
 
         print(f"{genre} mean offset: {mean_offset}, p={p_value}")
         print(f"median offset: {np.nanmedian(best_offsets)}")
+
+        rows.append({"genre": genre, "mean_offset": mean_offset, "p": p_value})
+
+    pd.DataFrame(rows).to_csv(RESULTS_FILE, index=False)

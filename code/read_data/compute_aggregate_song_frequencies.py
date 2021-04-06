@@ -42,7 +42,7 @@ def compute_frequency_dataframe(songs):
 
 if __name__ == "__main__":
 
-    with open(f"{DATA_PATH}/songs_with_metadata.p", "rb") as fp:
+    with open(f"{DATA_PATH}/songs_with_metadata_english.p", "rb") as fp:
         songs = pickle.load(fp)
 
     with open(ALL_WORDS_PATH, "rb") as fp:
