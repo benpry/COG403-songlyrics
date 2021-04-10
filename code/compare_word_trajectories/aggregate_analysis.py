@@ -5,9 +5,11 @@ from cross_correlations import get_best_offset, bootstrap_test
 import pandas as pd
 import numpy as np
 import pickle
+from granger_tests import run_granger_test
 
 DATA_PATH = "../../data/processed"
-RESULTS_PATH = "../../data/aggregate_best_offsets.csv"
+CROSSCORR_RESULTS_PATH = "../../data/aggregate_best_offsets.csv"
+GRANGER_RESULTS_PATH = "../../data/aggregate_granger_lags.csv"
 
 if __name__ == "__main__":
 
@@ -19,18 +21,32 @@ if __name__ == "__main__":
     df_book.columns = ["", "year", "word", "freq"]
     df_book = df_book[(df_book["year"] >= 1980) & (df_book["year"] <= 2011)]
 
-    rows = []
+    cross_rows = []
     best_offsets = []
+    granger_rows = []
+    granger_results = []
     for word in df_book["word"].drop_duplicates():
         best_offset = get_best_offset(df_book, df_song, word)
         best_offsets.append(best_offset)
-        rows.append({"word": word, "offset": best_offset})
+        cross_rows.append({"word": word, "offset": best_offset})
+        granger_result = run_granger_test(df_book, df_song, word)
+        granger_results.append(granger_result)
+        granger_rows.append({"word": word, "lag": granger_result})
 
     mean_offset = np.nanmean(best_offsets)
     p_value = bootstrap_test(mean_offset, best_offsets)
 
-    df_offsets = pd.DataFrame(rows)
-    df_offsets.to_csv(RESULTS_PATH, index=False)
+    df_offsets = pd.DataFrame(cross_rows)
+    df_offsets.to_csv(CROSSCORR_RESULTS_PATH, index=False)
 
     print(f"mean offset: {mean_offset}, p={p_value}")
     print(f"median offset: {np.nanmedian(best_offsets)}")
+
+    mean_granger_lag = np.nanmean(granger_results)
+    granger_p = bootstrap_test(mean_granger_lag, granger_results)
+
+    df_granger = pd.DataFrame(granger_results)
+    df_granger.to_csv(GRANGER_RESULTS_PATH, index=False)
+
+    print(f"mean granger lag: {mean_granger_lag}, p={granger_p}")
+    print(f"median offset: {np.nanmedian(granger_results)}")
