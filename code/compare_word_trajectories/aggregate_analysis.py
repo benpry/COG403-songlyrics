@@ -19,16 +19,18 @@ if __name__ == "__main__":
     df_book.columns = ["", "year", "word", "freq"]
     df_book = df_book[(df_book["year"] >= 1980) & (df_book["year"] <= 2011)]
 
+    rows = []
     best_offsets = []
     for word in df_book["word"].drop_duplicates():
         best_offset = get_best_offset(df_book, df_song, word)
         best_offsets.append(best_offset)
+        rows.append({"word": word, "offset": best_offset})
 
     mean_offset = np.nanmean(best_offsets)
     p_value = bootstrap_test(mean_offset, best_offsets)
 
-    all_best_offsets = pd.Series(best_offsets)
-    all_best_offsets.to_csv(RESULTS_PATH)
+    df_offsets = pd.DataFrame(rows)
+    df_offsets.to_csv(RESULTS_PATH, index=False)
 
     print(f"mean offset: {mean_offset}, p={p_value}")
     print(f"median offset: {np.nanmedian(best_offsets)}")

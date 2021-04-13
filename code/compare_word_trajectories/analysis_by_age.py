@@ -4,13 +4,16 @@ This does the analysis by age
 from cross_correlations import get_best_offset, bootstrap_test
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 AGE_DIRECTORY = "../../data/processed/freqs_by_age"
 DATA_PATH = "../../data/processed"
+RESULTS_PATH = '../../results'
 
 if __name__ == "__main__":
 
     ages = ["under20", "20to30", "30to40", "40to50", "over50"]
+    mean_offsets = []
 
     df_book = pd.read_csv(f"{DATA_PATH}/book_frequencies.csv")
     df_book = df_book.drop(["Corpus"], axis=1)
@@ -31,3 +34,13 @@ if __name__ == "__main__":
 
         print(f"{age} mean offset: {mean_offset}, p={p_value}")
         print(f"median offset: {np.nanmedian(best_offsets)}")
+
+        mean_offsets.append(mean_offset)
+    
+    # Plot
+    fig, ax = plt.subplots()
+    fig.suptitle('Age Analysis Results Plotted', y=0.92)
+    ax = plt.scatter(ages, mean_offsets)
+    plt.xlabel('Age Groups')
+    plt.ylabel('Mean Offset')
+    plt.savefig(RESULTS_PATH + "/age_analysis_plot.png")
