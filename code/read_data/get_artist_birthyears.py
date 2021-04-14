@@ -24,7 +24,7 @@ if __name__ == "__main__":
             # Search for first occurence of word "born"
             b = intro.find(" born ")
             if b != -1:
-                # Collect words from the 100 characters following "born"
+                # Collect words from the 150 characters following "born"
                 remove = dict.fromkeys(map( ord, string.punctuation))
                 txt = intro[b:b+150].translate(remove).lower()
                 txt_split = txt.split()[1:]
@@ -47,7 +47,6 @@ if __name__ == "__main__":
                             potential_year = int(word[0:4])
                         # Check that the number is a valid year
                         if potential_year > 1900 and potential_year < 2020:
-                            print('----- FOUND ----- ',  potential_year)
                             return potential_year
                         
 

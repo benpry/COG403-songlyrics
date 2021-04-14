@@ -26,6 +26,7 @@ if __name__ == "__main__":
     for word in df_book["word"].drop_duplicates():
         best_offset = get_best_offset(df_book, df_song, word)
         best_offsets.append(best_offset)
+        rows.append({"word": word, "offset": best_offset})
         granger_result = run_granger_test(df_book, df_song, word)
         granger_results.append(granger_result)
         rows.append({"word": word, "offset": best_offset, "granger_lag": granger_result})
@@ -37,6 +38,7 @@ if __name__ == "__main__":
     df_offsets.to_csv(RESULTS_PATH, index=False)
 
     print(f"mean offset: {mean_offset}, p={p_value}")
+    print(f"median offset: {np.nanmedian(best_offsets)}")
     print(f"median offset: {np.nanmedian(best_offsets)}")
 
     mean_granger_lag = np.nanmean(granger_results)
