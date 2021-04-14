@@ -6,6 +6,16 @@ The "code" folder contains all the code used to run the analysis, with the follo
 
 read_data: files to read the MusixMatch data, get years of recording, artist age, artist gender. Also code that reads the google Ngram data (read_ngrams.R) and computes yearly relative frequencies (compute_aggregate_song_frequencies.py).
 
+The preprocessing files should be run in the following order: 
+1. read_mxm_dataset.py
+2. get_lastfm_metadata.py
+3. add_year_data.py
+4. merge_year_data.py
+5. add_metadata_to_songs.py
+6. compute_aggregate_song_frequencies.py
+
+This will enable you to run the aggregate analysis. For other analyses, run the preprocessing file get_{analysis type}.py, then the frequency computing file, i.e. compute_frequencies_by_{variable}.py
+
 compare_word_trajectories: files to perform time-lag cross correlation and Granger causality testing, either in aggregate, by genre, by gender or by age. Also includes files to perform regression of tlcc offsets and granger lags on gender and age.
 
 topic_modelling_analysis: files that apply Latent Dirichlet Allocation to identify topics in lyrics. This ultimately didn't make it into the paper as it was hard to identify what the topics represented from their top few words, but we still include the code here.
