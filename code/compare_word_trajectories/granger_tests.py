@@ -20,14 +20,14 @@ def run_granger_test(df_book, df_song, word):
         return np.NaN
 
     best_lag = None
-    best_pval = 2
+    best_F = -1
     for forward_lag in forward_result:
-        if forward_result[forward_lag][0]["ssr_ftest"][1] < best_pval:
+        if forward_result[forward_lag][0]["ssr_ftest"][1] > best_F:
             best_lag = - forward_lag
-            best_pval = forward_result[forward_lag][0]["ssr_ftest"][1]
+            best_F = forward_result[forward_lag][0]["ssr_ftest"][1]
     for backward_lag in backward_result:
-        if backward_result[backward_lag][0]["ssr_ftest"][1] < best_pval:
+        if backward_result[backward_lag][0]["ssr_ftest"][1] > best_F:
             best_lag = backward_lag
-            best_pval = backward_result[backward_lag][0]["ssr_ftest"][1]
+            best_F = backward_result[backward_lag][0]["ssr_ftest"][1]
 
     return best_lag
