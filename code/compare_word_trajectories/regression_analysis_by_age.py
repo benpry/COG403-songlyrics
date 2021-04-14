@@ -38,7 +38,7 @@ if __name__ == "__main__":
     df_joined = pd.merge(df_joined, df_offsets_lags, how='inner', on=['word'])
 
     # Level-level Regression
-    X = df_joined[['freq_' + age for age in ages]]
+    X = df_joined[['freq_' + age for age in age_groups]]
     X = sm.add_constant(X)
     y1 = df_joined['offset']
     y2 = df_joined['granger_lag']
@@ -49,7 +49,7 @@ if __name__ == "__main__":
     for age in age_groups:
         np.seterr(divide = 'ignore')
         df_joined['log_freq_' + age] = np.where(df_joined['freq_' + age] > 0, np.log2(df_joined['freq_' + age]), 0)
-    X = df_joined[['log_freq_' + age for age in ages]]
+    X = df_joined[['log_freq_' + age for age in age_groups]]
     X = sm.add_constant(X)
     y1 = df_joined['offset']
     y2 = df_joined['granger_lag']
@@ -59,7 +59,7 @@ if __name__ == "__main__":
     # Log-log Regression
     df_joined['log_offset'] = np.where(df_joined['offset'] > 0, np.log2(df_joined['offset']), 0)
     df_joined['log_granger_lag'] = np.where(df_joined['granger_lag'] > 0, np.log2(df_joined['granger_lag']), 0)
-    X = df_joined[['log_freq_' + age for age in ages]]
+    X = df_joined[['log_freq_' + age for age in age_groups]]
     X = sm.add_constant(X)
     y1 = df_joined['log_offset']
     y2 = df_joined['log_granger_lag']

@@ -39,7 +39,6 @@ if __name__ == "__main__":
 
     print(f"mean offset: {mean_offset}, p={p_value}")
     print(f"median offset: {np.nanmedian(best_offsets)}")
-    print(f"median offset: {np.nanmedian(best_offsets)}")
 
     mean_granger_lag = np.nanmean(granger_results)
     granger_p = bootstrap_test(mean_granger_lag, granger_results)
