@@ -1,18 +1,18 @@
 """
-This does the analysis by age
+This does the analysis by gender
 """
 from cross_correlations import get_best_offset, bootstrap_test
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-AGE_DIRECTORY = "../../data/processed/freqs_by_age"
+GENDER_DIRECTORY = "../../data/processed/freqs_by_gender"
 DATA_PATH = "../../data/processed"
 RESULTS_PATH = '../../results'
 
 if __name__ == "__main__":
 
-    ages = ["under20", "20to30", "30to40", "40to50", "over50"]
+    genders = ['female', 'male']
     mean_offsets = []
 
     df_book = pd.read_csv(f"{DATA_PATH}/book_frequencies.csv")
@@ -20,8 +20,8 @@ if __name__ == "__main__":
     df_book.columns = ["", "year", "word", "freq"]
     df_book = df_book[(df_book["year"] >= 1960) & (df_book["year"] <= 2011)]
 
-    for age in ages:
-        df_song = pd.read_csv(f"{AGE_DIRECTORY}/{age}.csv")
+    for gender in genders:
+        df_song = pd.read_csv(f"{GENDER_DIRECTORY}/{gender}.csv")
         df_song = df_song[df_song["year"] >= 1960]
 
         best_offsets = []
@@ -32,15 +32,15 @@ if __name__ == "__main__":
         mean_offset = np.nanmean(best_offsets)
         p_value = bootstrap_test(mean_offset, best_offsets)
 
-        print(f"{age} mean offset: {mean_offset}, p={p_value}")
+        print(f"{gender} mean offset: {mean_offset}, p={p_value}")
         print(f"median offset: {np.nanmedian(best_offsets)}")
 
         mean_offsets.append(mean_offset)
     
     # Plot
     fig, ax = plt.subplots()
-    fig.suptitle('Age Analysis Results Plotted', y=0.92)
-    ax = plt.scatter(ages, mean_offsets)
-    plt.xlabel('Age Groups')
+    fig.suptitle('Mean Offsets by Gender Results Plotted', y=0.92)
+    ax = plt.bar(genders, mean_offsets)
+    plt.xlabel('Genders')
     plt.ylabel('Mean Offset')
-    plt.savefig(RESULTS_PATH + "/age_analysis_plot.png")
+    plt.savefig(RESULTS_PATH + "/gender_offset_analysis_plot.png")
